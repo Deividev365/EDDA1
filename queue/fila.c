@@ -2,43 +2,54 @@
 #include <stdlib.h>
 #include <locale.h>
 
+// FIRST IN, FIRST OUT - FIFO //
 
-#define N 3
-// filas estáticas //
-// segue o conceito de FIFO - First in - First out //
+int fila[256];
+int contador = 0;
 
 
-typedef struct  T_FILA {
+void inserirElementoNaFila(int x) {
 
-    int dados[N];
-    int fim;
+    if(contador == 256) {
+        printf("FILA CHEIA!!");
+        return;
+    }
+    fila[contador] = x;  // acesando a posição 0 do array //
+    contador++; // incrementando para ir para o próximo elemento do array //
 
-} T_FILA;
+}
 
-// iniciar o vetor em 0, passando um ponteiro para apontar para o typedef
-void inicializaFila(T_FILA * f) {
-    int i;
+int removerDaFila() {
 
-    for (i = 0; i < N; i++) {
-        f->dados[i] = 0;
+    if(contador == 0) {
+        printf("FILA VAZIA!!");
+        return;
     }
 
-    f->fim = 0;
-    
+    int res = fila[0];
+    int i;
+
+    for(i = 0; i < contador - 1; i++) {
+        fila[i] = fila[i + 1];
+    }
+    contador--;
+    return res;
+
 }
 
 
-void enfileira( int dado, T_FILA * f) {
-    if(f->fim == N) { // a fila está cheia e não pode inserir mais dados // 
-        printf("Fila está cheia!!");
-    } else {
-        f->dados[f->fim] = dado;
-        f->fim++;
-    }
-} 
-
-
-
 int main() {
+
+
+    inserirElementoNaFila(1);
+    inserirElementoNaFila(2);
+    inserirElementoNaFila(3);
+    inserirElementoNaFila(1);
+    inserirElementoNaFila(5);
     
+    int i; 
+
+    for(i = 0; i < 256; i++) {
+        printf("%d ", removerDaFila());
+    }
 }
